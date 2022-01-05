@@ -86,10 +86,10 @@ CREATE TABLE image_submissions(
     FOREIGN KEY (submission_id) REFERENCES submissions(id)
 );
 
-CREATE TABLE submission_messages(
+CREATE TABLE submission_messages( -- Review message (message pas admin ngereview)
     task_id varchar(37),
     user_id varchar(37),
-    msg varchar(1024),
+    message varchar(1024),
     FOREIGN KEY (task_id) REFERENCES tasks(id),
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
