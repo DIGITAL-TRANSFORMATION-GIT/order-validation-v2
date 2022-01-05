@@ -90,8 +90,8 @@ CREATE TABLE submission_messages(
     task_id varchar(37),
     user_id varchar(37),
     msg varchar(1024),
-    FOREIGN KEY (task_id) REFERENCES tasks.id
-    FOREIGN KEY (user_id) REFERENCES users.id
+    FOREIGN KEY (task_id) REFERENCES tasks(id),
+    FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 
