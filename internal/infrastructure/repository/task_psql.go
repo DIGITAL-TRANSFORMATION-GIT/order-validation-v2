@@ -176,10 +176,11 @@ func (r *TaskPSQL) GetbyUserID(userID string) ([]*entity.TaskWithDetails, error)
 		if err != nil {
 			return nil, err
 		}
-		t.Messages, err = r.GetReviewMessages(t.ID)
-		if err != nil {
-			return nil, err
-		}
+		/*
+			t.Messages, err = r.GetReviewMessages(t.ID)
+			if err != nil {
+				return nil, err
+			}*/
 		tasks = append(tasks, &t)
 	}
 
@@ -253,10 +254,11 @@ func (r *TaskPSQL) GetTasksToReview(adminID string) ([]*entity.TaskWithDetails, 
 		if err != nil {
 			return nil, err
 		}
-		t.Messages, err = r.GetReviewMessages(t.ID)
-		if err != nil {
-			return nil, err
-		}
+		/*
+			t.Messages, err = r.GetReviewMessages(t.ID)
+			if err != nil {
+				return nil, err
+			}*/
 		tasks = append(tasks, &t)
 	}
 	if len(tasks) == 0 {
