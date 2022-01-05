@@ -22,6 +22,7 @@ type Writer interface {
 	AddReviewer(TaskID string, NewReviewerID string) error
 	DeleteReviewer(UserID string) error
 	AddPrerequisite(taskID string, prerequisite string) error
+	AddReviewMessage(TaskID string, Message entity.Message) error
 }
 
 type Repository interface {
@@ -43,4 +44,5 @@ type UseCase interface {
 	AddReviewer(TaskID string, NewReviewerID string) error
 	GetPrerequisites(TaskID string) ([]string, error)
 	DeleteReviewer(UserID string) error
+	AddReviewMessage(TaskID string, Message entity.Message) error
 }
