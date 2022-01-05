@@ -75,3 +75,7 @@ func (s *Service) GetPrerequisites(TaskID string) ([]string, error) {
 func (s *Service) DeleteReviewer(UserID string) error {
 	return s.repo.DeleteReviewer(UserID)
 }
+
+func (s *Service) AddReviewMessage(TaskID string, Message entity.Message) error {
+	return s.repo.AddReviewMessage(TaskID, Message)
+}

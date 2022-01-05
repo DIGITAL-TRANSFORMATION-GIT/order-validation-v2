@@ -34,7 +34,11 @@ func (c *Controller) updateTaskStatus(taskID string, wg *sync.WaitGroup, status 
 }
 
 func (c *Controller) addComment(taskID string, userID string, message string, wg *sync.WaitGroup) {
-
+	var reviewMessage entity.Message
+	reviewMessage.UserID = userID
+	reviewMessage.Message = message
+	c.task.AddReviewMessage(taskID, reviewMessage)
+	wg.Done()
 }
 
 func (c *Controller) processReviewForm(userID string, taskID string, wg *sync.WaitGroup, approved bool, forwardTo []string, message string) {
@@ -55,8 +59,8 @@ func (c *Controller) processReviewForm(userID string, taskID string, wg *sync.Wa
 			fmt.Println("Forwarding")
 			wg2.Add(1)
 			go c.forward(taskID, forwardTo, &wg2)
-		}
-		if task.NumOfReviewer == 0 {
+		} else if task.NumOfReviewer == 0 {
+			fmt.Println("JOB DONE")
 			wg2.Add(1)
 			go c.updateTaskStatus(taskID, &wg2, 2)
 		}

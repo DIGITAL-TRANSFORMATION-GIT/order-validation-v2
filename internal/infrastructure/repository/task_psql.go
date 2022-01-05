@@ -176,11 +176,10 @@ func (r *TaskPSQL) GetbyUserID(userID string) ([]*entity.TaskWithDetails, error)
 		if err != nil {
 			return nil, err
 		}
-		/*
-			t.Messages, err = r.GetReviewMessages(t.ID)
-			if err != nil {
-				return nil, err
-			}*/
+		t.Messages, err = r.GetReviewMessages(t.ID)
+		if err != nil {
+			return nil, err
+		}
 		tasks = append(tasks, &t)
 	}
 
