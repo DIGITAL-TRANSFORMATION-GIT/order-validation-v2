@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"order-validation-v2/internal/controller/models"
 	"order-validation-v2/internal/entity"
 	"sync"
@@ -50,13 +51,14 @@ func (c *Controller) processReviewForm(userID string, taskID string, wg *sync.Wa
 		c.task.DeleteReviewer(userID)
 		task.ReduceNumOfReviewer()
 		c.task.UpdateTask(task)
+		if len(forwardTo) > 0 {
+			fmt.Println("Forwarding")
+			wg2.Add(1)
+			go c.forward(taskID, forwardTo, &wg2)
+		}
 		if task.NumOfReviewer == 0 {
 			wg2.Add(1)
 			go c.updateTaskStatus(taskID, &wg2, 2)
-		}
-		if len(forwardTo) > 0 {
-			wg2.Add(1)
-			go c.forward(taskID, forwardTo, &wg2)
 		}
 	} else {
 		wg2.Add(1)
@@ -69,6 +71,7 @@ func (c *Controller) processReviewForm(userID string, taskID string, wg *sync.Wa
 
 func (c *Controller) forward(taskID string, adminIDs []string, wg *sync.WaitGroup) {
 	for _, id := range adminIDs {
+		fmt.Println("Forwarding to ", id)
 		err := c.task.AddReviewer(taskID, id)
 		if err != nil {
 			c.logger.ErrorLogger.Println("Error forwarding: ", err.Error())
