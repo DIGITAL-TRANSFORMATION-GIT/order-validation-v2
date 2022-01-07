@@ -52,6 +52,7 @@ func (c *Controller) ChangePassword(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if authorize {
+		c.logger.InfoLogger.Println("Password Change for: ", userID)
 		user.Password = form.NewPassword
 		err := c.user.UpdateUser(user)
 		if err != nil {
@@ -59,6 +60,9 @@ func (c *Controller) ChangePassword(w http.ResponseWriter, r *http.Request) {
 			c.logger.ErrorLogger.Println("Error while updating user : ", err.Error())
 			return
 		}
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Invalid Old Password"))
+		return
 	}
 	w.WriteHeader(http.StatusUnauthorized)
 	w.Write([]byte("Invalid Old Password"))
