@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"order-validation-v2/internal/controller/models"
+
+	"github.com/gorilla/mux"
 )
 
 func (c *Controller) NewUser(w http.ResponseWriter, r *http.Request) {
@@ -22,6 +24,12 @@ func (c *Controller) NewUser(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte("Invalid Request"))
 		c.logger.ErrorLogger.Println("Invalid Request, Can't unmarshal :", err.Error())
+		return
+	}
+	exists, err := c.user.ValidateUsername(newUser.Username)
+	if exists {
+		w.WriteHeader(http.StatusConflict)
+		w.Write([]byte("Username Exists"))
 		return
 	}
 	id, err := c.user.CreateUser(newUser.Username, newUser.Email, newUser.Password, newUser.Role)
@@ -47,4 +55,16 @@ func (c *Controller) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	}
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(response)
+}
+
+func (c *Controller) DeleteUser(w http.ResponseWriter, r *http.Request) {
+	err := c.user.DeleteUser(mux.Vars(r)["id"])
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		c.logger.ErrorLogger.Println("Error while deleting task : ", err.Error())
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	return
+
 }

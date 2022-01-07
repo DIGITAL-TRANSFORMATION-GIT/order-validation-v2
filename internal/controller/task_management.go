@@ -123,7 +123,6 @@ func (c *Controller) GetTasksOfUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *Controller) GetTasksOnSpecificOrder(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(mux.Vars(r)["id"])
 	tasks, err := c.task.GetTasksOnSpecificOrder(mux.Vars(r)["id"])
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -137,4 +136,15 @@ func (c *Controller) GetTasksOnSpecificOrder(w http.ResponseWriter, r *http.Requ
 	}
 	response := models.BuildTasks(tasks)
 	json.NewEncoder(w).Encode(response)
+}
+
+func (c *Controller) DeleteTask(w http.ResponseWriter, r *http.Request) {
+	err := c.task.DeleteTask(mux.Vars(r)["id"])
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		c.logger.ErrorLogger.Println("Error while deleting task : ", err.Error())
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	return
 }

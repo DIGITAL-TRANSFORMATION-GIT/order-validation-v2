@@ -181,3 +181,16 @@ func (c *Controller) ModifyRequirements(w http.ResponseWriter, r *http.Request) 
 	}
 
 }
+
+/*
+func (c *Controller) DeleteOrder(w http.ResponseWriter, r *http.Request) {
+	err := c.order.DeleteOrder(mux.Vars(r)["id"])
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		c.logger.ErrorLogger.Println("Error while deleting task : ", err.Error())
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	return
+}
+*/

@@ -55,13 +55,13 @@ func (r *UserPSQL) GetbyUsername(username string) (*entity.User, error) {
 }
 
 func (r *UserPSQL) GetbyID(ID string) (*entity.User, error) {
-	stmt, err := r.db.Prepare(`SELECT id, username, email, user_role from users where ID = $1`)
+	stmt, err := r.db.Prepare(`SELECT id, username, email, pswd, user_role from users where ID = $1`)
 	if err != nil {
 		return nil, err
 	}
 	var user entity.User
 	row := stmt.QueryRow(ID)
-	err = row.Scan(&user.ID, &user.Username, &user.Email, &user.UserRole)
+	err = row.Scan(&user.ID, &user.Username, &user.Email, &user.Password, &user.UserRole)
 	if err != nil {
 		return nil, err
 	}
@@ -129,10 +129,16 @@ func (r *UserPSQL) Delete(username string) error {
 	return nil
 }
 
-func (r *UserPSQL) CustomQuery(query string) (*sql.Rows, error) {
-	rows, err := r.db.Query(query)
+func (r *UserPSQL) CheckUsername(username string) (bool, error) {
+	var exist int
+	stmt, err := r.db.Prepare("SELECT COUNT(1) FROM users WHERE username = $1 LIMIT 1")
 	if err != nil {
-		return nil, err
+		return false, err
 	}
-	return rows, nil
+	row := stmt.QueryRow(username)
+	row.Scan(&exist)
+	if exist == 0 {
+		return false, nil
+	}
+	return true, nil
 }
