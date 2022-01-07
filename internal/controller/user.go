@@ -60,7 +60,7 @@ func (c *Controller) ChangePassword(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("Password Change"))
+		w.Write([]byte("Password has been changed"))
 		return
 	}
 	w.WriteHeader(http.StatusUnauthorized)
@@ -111,6 +111,9 @@ func (c *Controller) ChangeUsername(w http.ResponseWriter, r *http.Request) {
 			c.logger.ErrorLogger.Println("Error while updating user : ", err.Error())
 			return
 		}
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Username has been Changed"))
+		return
 	}
 	w.WriteHeader(http.StatusUnauthorized)
 	w.Write([]byte("Invalid Old Password"))
