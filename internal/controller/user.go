@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"crypto/sha256"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -52,7 +53,7 @@ func (c *Controller) ChangePassword(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if authorize {
-		user.Password = form.NewPassword
+		user.Password = fmt.Sprintf("\\x%x", sha256.Sum256([]byte(form.NewPassword)))
 		err := c.user.UpdateUser(user)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
