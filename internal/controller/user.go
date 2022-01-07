@@ -60,7 +60,7 @@ func (c *Controller) ChangePassword(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("Invalid Old Password"))
+		w.Write([]byte("Password Change"))
 		return
 	}
 	w.WriteHeader(http.StatusUnauthorized)
