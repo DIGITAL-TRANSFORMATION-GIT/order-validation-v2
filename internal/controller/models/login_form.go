@@ -10,7 +10,7 @@ type Token struct {
 }
 
 type ChangePasswordForm struct {
-	OldPassword string `json:"password"`
+	OldPassword string `json:"old_password"`
 	NewPassword string `json:"new_password"`
 }
 

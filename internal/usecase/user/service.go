@@ -111,6 +111,8 @@ func (s *Service) ValidateAndRetrieveUser(userID string, password string) (bool,
 		return false, nil, errors.New("UserID not found")
 	}
 	sum := sha256.Sum256([]byte(password))
+	fmt.Println(sum)
+	fmt.Println(u.Password)
 	if u.Password == fmt.Sprintf("\\x%x", sum) {
 		return true, u, nil
 	}
