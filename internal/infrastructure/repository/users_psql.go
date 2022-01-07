@@ -70,7 +70,7 @@ func (r *UserPSQL) GetbyID(ID string) (*entity.User, error) {
 
 func (r *UserPSQL) Update(u *entity.User) error {
 	_, err := r.db.Exec("UPDATE users SET pswd = sha256($1),  username = $2, email = $3, user_role = $4 where id = $5",
-		u.Password, u.Username, u.Email, u.UserRole, u.Username)
+		u.Password, u.Username, u.Email, u.UserRole, u.ID)
 	if err != nil {
 		return err
 	}

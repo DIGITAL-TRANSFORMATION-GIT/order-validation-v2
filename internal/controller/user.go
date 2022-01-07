@@ -52,7 +52,6 @@ func (c *Controller) ChangePassword(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if authorize {
-		c.logger.InfoLogger.Println("Password Change for: ", userID)
 		user.Password = form.NewPassword
 		err := c.user.UpdateUser(user)
 		if err != nil {
